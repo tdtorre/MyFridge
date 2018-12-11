@@ -1,14 +1,66 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app.
-
-<SurveyPrompt Title="How is Blazor working for you?" />
-
-<div class="form-inline">
-    <div class="form-group mx-sm-3 mb-2">
-        <input type="text" class="form-control" id="newItem" placeholder="Add item...">
-    </div>
-    <button type="submit" class="btn btn-default mb-2">+</button>
+<div id="newItemHeader">
+    <p>What do you have in your fridge?</p>
 </div>
+
+<div id="newItemContainter" class="form-inline">
+    <div id="newItemGroup" class="form-group">
+        <input type="text" class="form-control" id="newItem" placeholder="Add item...">
+        <button type="submit" class="btn btn-default">+</button>
+    </div>
+</div>
+
+<ul id="fridge" class="list-group stock">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Milk
+        <span class="badge badge-primary badge-pill">2</span>
+        @*<div>
+            <button class="btn btn-default">
+                <span class="oi oi-plus" aria-hidden="true"></span>
+            </button>
+            <button class="btn btn-default">
+                <span class="oi oi-minus" aria-hidden="true"></span>
+            </button>
+            <button class="btn btn-default">
+                <span class="oi oi-cart" aria-hidden="true"></span>
+            </button>
+            <button class="btn btn-dark">2</button>
+        </div>*@
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Eggs
+        <span class="badge badge-primary badge-pill">11</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Meat balls
+        <span class="badge badge-primary badge-pill">4</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Beer
+        <span class="badge badge-primary badge-pill">6</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Meat balls
+        <span class="badge badge-primary badge-pill">4</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Beer
+        <span class="badge badge-primary badge-pill">6</span>
+    </li>
+</ul>
+
+<ul id="freezer" class="list-group stock">
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Ice-cream
+        <span class="badge badge-primary badge-pill">2</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Chicken
+        <span class="badge badge-primary badge-pill">11</span>
+    </li>
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+        Tuna
+        <span class="badge badge-primary badge-pill">4</span>
+    </li>
+</ul>

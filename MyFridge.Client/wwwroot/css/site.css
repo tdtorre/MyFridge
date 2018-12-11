@@ -8,6 +8,8 @@ html, body {
 }
 
 app {
+    margin-left: auto;
+    margin-right: auto;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -33,12 +35,8 @@ app {
     font-family: 'Oswald', sans-serif;
 }
 
-    .sidebar .top-row {
-        /*background-color: rgba(0,0,0,0.4);*/
-    }
-
     .sidebar .navbar-brand {
-        font-size: 24px;
+        font-size: 30px;
         color: #f44336;
     }
 
@@ -54,9 +52,13 @@ app {
     }
 
 .nav-item {
-    font-size: 0.9rem;
+    font-size: 20px;
     padding-bottom: 0.5rem;
 }
+
+    .nav-item span{
+        margin-top: 5px;
+    }
 
     .nav-item:first-of-type {
         padding-top: 1rem;
@@ -89,15 +91,88 @@ app {
     padding-top: 1.1rem;
 }
 
-.navbar-toggler {
+.navbar-toggler-custom {
+    padding: .25rem .75rem;
+    font-size: 1.25rem;
+    line-height: 1;
     background-color: rgba(255, 255, 255, 0.1);
     color: #d6d8db;
     border: 1px solid #d6d8db;
+    border-radius: .25rem
+}
+
+    .navbar-toggler-custom span {
+        margin-top: 5px;
+        color: #d6d8db;
+    }
+
+#newItemHeader{
+    text-align: center;
+    margin-top: 50px;
+}
+
+#newItemContainter {
+    width: 100%;
+}
+
+    #newItemContainter input#newItem {
+        font-size: 30px;
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        border-style: dashed;
+        display: block;
+    }
+
+    #newItemContainter button {
+        font-size: 30px;
+        width: 60px;
+        margin-left: 10px;
+        display: block;
+    }
+
+#newItemGroup {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stock {
+    width: 70%;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+ul#fridge li {
+    background-color: #F7F7F7;
+}
+
+ul#freezer li {
+    background-color: #E0F0F0;
 }
 
 @media (max-width: 767.98px) {
     .main .top-row {
         display: none;
+    }
+
+    #newItemHeader {
+        margin-top: 10px;
+    }
+
+    #newItemContainter input#newItem {
+        width: 100%;
+        display: inline;
+    }
+
+    #newItemContainter button {
+        font-size: 30px;
+        width: 100%;
+        margin-top: 10px;
+        margin-left: 0px;
+        display: inline;
+    }
+
+    .stock {
+        width: 100%;
     }
 }
 
@@ -123,7 +198,7 @@ app {
         padding-right: 1.5rem !important;
     }
 
-    .navbar-toggler {
+    .navbar-toggler-custom {
         display: none;
     }
 
