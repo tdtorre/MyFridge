@@ -1,7 +1,10 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Oswald');
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333333;
 }
 
 app {
@@ -26,15 +29,21 @@ app {
     }
 
 .sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    border-right: 1px solid #d6d8db;
+    font-family: 'Oswald', sans-serif;
 }
 
     .sidebar .top-row {
-        background-color: rgba(0,0,0,0.4);
+        /*background-color: rgba(0,0,0,0.4);*/
     }
 
     .sidebar .navbar-brand {
-        font-size: 1.1rem;
+        font-size: 24px;
+        color: #f44336;
+    }
+
+    .sidebar a.navbar-brand:hover {
+        color: #f44336;
     }
 
     .sidebar .oi {
@@ -58,7 +67,7 @@ app {
     }
 
     .nav-item a {
-        color: #d7d7d7;
+        color: #d6d8db;
         border-radius: 4px;
         height: 3rem;
         display: flex;
@@ -68,12 +77,12 @@ app {
 
         .nav-item a.active {
             background-color: rgba(255,255,255,0.25);
-            color: white;
+            color: #333333;
         }
 
         .nav-item a:hover {
             background-color: rgba(255,255,255,0.1);
-            color: white;
+            color: #333333;
         }
 
 .content {
@@ -82,6 +91,8 @@ app {
 
 .navbar-toggler {
     background-color: rgba(255, 255, 255, 0.1);
+    color: #d6d8db;
+    border: 1px solid #d6d8db;
 }
 
 @media (max-width: 767.98px) {
