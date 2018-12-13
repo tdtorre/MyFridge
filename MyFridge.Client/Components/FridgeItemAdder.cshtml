@@ -1,0 +1,59 @@
+﻿@using MyFridge.Shared
+@inherits FridgeItemAdderModel
+
+<div id="newItemContainter">
+    <div class="form-inline">
+        <div id="newItemGroup" class="form-group">
+            <input type="text" class="form-control oversizeControls" id="newItem" placeholder="Add item..." value="@this.Item.Name" onchange=@(newValue => this.Item.Name = newValue.Value.ToString()) />
+            <div class="input-group">
+                <select class="custom-select oversizeControls" bind="@this.Item.Location">
+                    <option value=@FridgeLocation.Fridge>@FridgeLocation.Fridge.ToString()</option>
+                    <option value=@FridgeLocation.Freezer>@FridgeLocation.Freezer.ToString()</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-default oversizeControls" onclick="@AddItemOnClick">+</button>
+        </div>
+    </div>
+</div>
+
+@functions{
+    [Parameter]
+    private Action<FridgeItem> OnAddItem { get; set; }
+
+    private FridgeItem Item { get; set; }
+
+    private FridgeLocation Location { get; set; } = FridgeLocation.Fridge;
+
+    protected override void OnInit()
+    {
+        base.OnInit();
+        this.Item = this.InitializeItem();
+    }
+
+    private void AddItemOnClick()
+    {
+        if (!string.IsNullOrEmpty(this.Item.Name))
+        {
+            // Before send the new item to the parent component, we initialize a new Item with the same Location of the current Item
+            var tempItem = this.InitializeItem();
+
+            // Send the item to the parent component
+            this.OnAddItem(this.Item);
+
+            // Assign the temp item to the current 
+            this.Item = tempItem;
+        }
+    }
+
+    private FridgeItem InitializeItem()
+    {
+        var location = FridgeLocation.Fridge;
+
+        if(this.Item != null)
+        {
+            location = this.Item.Location;
+        }
+
+        return new FridgeItem() { Location = location, Quantity = 1 };
+    }
+}

@@ -56,7 +56,7 @@ app {
     padding-bottom: 0.5rem;
 }
 
-    .nav-item span{
+    .nav-item span {
         margin-top: 5px;
     }
 
@@ -106,7 +106,7 @@ app {
         color: #d6d8db;
     }
 
-#newItemHeader{
+#newItemHeader {
     text-align: center;
     margin-top: 50px;
 }
@@ -114,19 +114,36 @@ app {
 #newItemContainter {
     width: 100%;
 }
+    #newItemContainter .newItemGroup {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
 
-    #newItemContainter input#newItem {
+    #newItemContainter .oversizeControls {
         font-size: 30px;
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    }
+
+    #newItemContainter input#newItem {
         border-style: dashed;
         display: block;
     }
 
     #newItemContainter button {
-        font-size: 30px;
         width: 60px;
         margin-left: 10px;
         display: block;
+    }
+
+    #newItemContainter .input-group {
+        margin-left: 10px;
+    }
+
+    #newItemContainter select {
+        border-style: dashed;
+        height: 59px;
+        width: 180px;
     }
 
 #newItemGroup {
@@ -140,28 +157,49 @@ app {
     margin-left: auto;
     margin-right: auto;
 }
-    .stock li.active {
-        margin-bottom: 70px;
+
+    .stock li.list-group-item {
+        cursor: pointer;
     }
 
-        .stock li.active div.list-group-buttons {
-            top: 60px;
-            position: absolute;
+    .stock li.buttonActions {
+        list-style-type: none;
+        margin-top: 10px;
+        margin-left: 20px;
+        background-color: transparent;
+        visibility: hidden;
+        height: 55px;
+    }
+
+        .stock li.buttonActions.active {
+            animation-name: slideDown;
+            -webkit-animation-name: slideDown;
+            animation-duration: 1s;
+            -webkit-animation-duration: 1s;
+            animation-timing-function: ease;
+            -webkit-animation-timing-function: ease;
+            visibility: visible !important;
         }
 
-ul#fridge li {
+ul#fridge li.list-group-item {
     background-color: #F7F7F7;
 }
 
-ul#freezer li {
+    ul#fridge li.list-group-item.active {
+        background-color: #d6d8db;
+        border-color: transparent;
+        color: #333333;
+    }
+
+ul#freezer li.list-group-item {
     background-color: #E0F0F0;
 }
 
-ul#fridge li.list-group-item.active {
-    background-color: #d6d8db;
-    border-color: transparent;
-    color: #333333;
-}
+    ul#freezer li.list-group-item.active {
+        background-color: #d6d8db;
+        border-color: transparent;
+        color: #333333;
+    }
 
 .badge-primary {
     background-color: #495057;
@@ -171,13 +209,11 @@ button.textIcon {
     width: 35px;
 }
 
-@media (max-width: 767.98px) {
-    .main .top-row {
-        display: none;
-    }
-
-    #newItemHeader {
+@media (max-width: 1080px) {
+    #newItemContainter .input-group {
+        margin-left: 0px;
         margin-top: 10px;
+        width: 100%;
     }
 
     #newItemContainter input#newItem {
@@ -191,6 +227,16 @@ button.textIcon {
         margin-top: 10px;
         margin-left: 0px;
         display: inline;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .main .top-row {
+        display: none;
+    }
+
+    #newItemHeader {
+        margin-top: 10px;
     }
 
     .stock {
@@ -227,5 +273,58 @@ button.textIcon {
     .sidebar .collapse {
         /* Never collapse the sidebar for wide screens */
         display: block;
+    }
+}
+
+/* ANIMATIONS */
+@keyframes slideDown {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    50% {
+        transform: translateY(8%);
+    }
+
+    65% {
+        transform: translateY(-4%);
+    }
+
+    80% {
+        transform: translateY(4%);
+    }
+
+    95% {
+        transform: translateY(-2%);
+    }
+
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+@-webkit-keyframes slideDown {
+    0% {
+        -webkit-transform: translateY(-100%);
+    }
+
+    50% {
+        -webkit-transform: translateY(8%);
+    }
+
+    65% {
+        -webkit-transform: translateY(-4%);
+    }
+
+    80% {
+        -webkit-transform: translateY(4%);
+    }
+
+    95% {
+        -webkit-transform: translateY(-2%);
+    }
+
+    100% {
+        -webkit-transform: translateY(0%);
     }
 }

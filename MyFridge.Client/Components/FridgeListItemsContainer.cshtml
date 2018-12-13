@@ -1,0 +1,19 @@
+﻿@using MyFridge.Shared
+@inject Services.AppState state
+@inherits FridgeListItemsContainerModel
+
+<ul id="@ListId" class="list-group stock">
+
+    @foreach (var item in FridgeItems)
+    {
+        <FridgeListItem Item="@item" OnRemoveItem=state.RemoveFromFridgelist OnAddToShoppingList=state.AddToShoppingList ></FridgeListItem>
+    }
+</ul>
+
+@functions {
+    [Parameter]
+    private string ListId { get; set; }
+
+    [Parameter]
+    IList<FridgeItem> FridgeItems { get; set; }
+}
