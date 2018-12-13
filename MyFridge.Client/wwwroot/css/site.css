@@ -135,11 +135,19 @@ app {
 }
 
 .stock {
-    width: 70%;
+    width: 530px;
     margin-top: 30px;
     margin-left: auto;
     margin-right: auto;
 }
+    .stock li.active {
+        margin-bottom: 70px;
+    }
+
+        .stock li.active div.list-group-buttons {
+            top: 60px;
+            position: absolute;
+        }
 
 ul#fridge li {
     background-color: #F7F7F7;
@@ -147,6 +155,20 @@ ul#fridge li {
 
 ul#freezer li {
     background-color: #E0F0F0;
+}
+
+ul#fridge li.list-group-item.active {
+    background-color: #d6d8db;
+    border-color: transparent;
+    color: #333333;
+}
+
+.badge-primary {
+    background-color: #495057;
+}
+
+button.textIcon {
+    width: 35px;
 }
 
 @media (max-width: 767.98px) {
