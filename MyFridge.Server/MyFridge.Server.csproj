@@ -9,10 +9,12 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.Server" Version="0.7.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MyFridge.Client\MyFridge.Client.csproj" />
+    <ProjectReference Include="..\MyFridge.Data\MyFridge.Data.csproj" />
     <ProjectReference Include="..\MyFridge.Shared\MyFridge.Shared.csproj" />
   </ItemGroup>
 

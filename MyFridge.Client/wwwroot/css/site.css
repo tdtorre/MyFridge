@@ -111,9 +111,25 @@ app {
     margin-top: 50px;
 }
 
+#shoppingList {
+    max-width: 530px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+    #shoppingList li {
+        cursor: pointer;
+        font-style: italic;
+    }
+
+        #shoppingList li.through {
+            text-decoration: line-through;
+        }
+
 #newItemContainter {
     width: 100%;
 }
+
     #newItemContainter .newItemGroup {
         width: 100%;
         margin-left: auto;
@@ -151,9 +167,26 @@ app {
     margin-right: auto;
 }
 
+p.stockTitle {
+    font-size: 12px;
+    margin-top: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+p.fridgeList-empty {
+    text-align: center;
+    font-style: italic;
+    font-size: 12px;
+}
+
+div.busyIndicator {
+    margin-top: 20px;
+}
+
 .stock {
     width: 530px;
-    margin-top: 30px;
+    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -161,6 +194,11 @@ app {
     .stock li.list-group-item {
         cursor: pointer;
     }
+
+        .stock li.list-group-item span.oi-warning {
+            top: 4px;
+            color: #f44336;
+        }
 
     .stock li.buttonActions {
         list-style-type: none;

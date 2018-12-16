@@ -1,22 +1,35 @@
-﻿using MyFridge.Shared;
+﻿using Microsoft.AspNetCore.Blazor;
+using MyFridge.Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace MyFridge.Client.Services
 {
     public class AppState
     {
-        private IList<FridgeItem> AllFridgeItems;
+        private readonly HttpClient http;
 
-        private IList<FridgeItem> ShoppingListItems;
+        private IList<FridgeItem> AllFridgeItems;
+        
+        public bool InProgress { get; private set; }
+
+        public IList<ShoppingListItem> ShoppingListItems { get; set; }
 
         public IList<FridgeItem> FridgeItems
         {
             get
             {
-                return this.AllFridgeItems.Where(f => f.Location == FridgeLocation.Fridge).ToList();
+                if(this.AllFridgeItems != null && this.AllFridgeItems.Any(i => i.Location == FridgeLocation.Fridge))
+                {
+                    return this.AllFridgeItems.Where(f => f.Location == FridgeLocation.Fridge).ToList();
+                }
+                else
+                {
+                    return new List<FridgeItem>();
+                }
             }
         }
 
@@ -24,96 +37,102 @@ namespace MyFridge.Client.Services
         {
             get
             {
-                return this.AllFridgeItems.Where(f => f.Location == FridgeLocation.Freezer).ToList();
+                if (this.AllFridgeItems != null && this.AllFridgeItems.Any(i => i.Location == FridgeLocation.Freezer))
+                {
+                    return this.AllFridgeItems.Where(f => f.Location == FridgeLocation.Freezer).ToList();
+                }
+                else
+                {
+                    return new List<FridgeItem>();
+                }
             }
         }
 
         public bool SearchInProgress { get; private set; }
 
-        public event Action OnChange;
+        public event Action OnUdpatedFridgeItems;
 
-        public async Task LoadItems()
+        public AppState(HttpClient httpInstance)
         {
-            var fridgeItems = new List<FridgeItem>();
-            fridgeItems.Add(new FridgeItem() { Id = Guid.NewGuid(), Name = "Milk", Quantity = 3, Location = FridgeLocation.Fridge });
-            fridgeItems.Add(new FridgeItem() { Id = Guid.NewGuid(), Name = "Eggs", Quantity = 12, Location = FridgeLocation.Fridge });
-            fridgeItems.Add(new FridgeItem() { Id = Guid.NewGuid(), Name = "Meat balls", Quantity = 2, Location = FridgeLocation.Fridge });
-            fridgeItems.Add(new FridgeItem() { Id = Guid.NewGuid(), Name = "Beer", Quantity = 7, Location = FridgeLocation.Fridge });
-            fridgeItems.Add(new FridgeItem() { Id = Guid.NewGuid(), Name = "Salmon", Quantity = 3, Location = FridgeLocation.Freezer });
-            fridgeItems.Add(new FridgeItem() { Id = Guid.NewGuid(), Name = "Tuna", Quantity = 1, Location = FridgeLocation.Freezer });
-            fridgeItems.Add(new FridgeItem() { Id = Guid.NewGuid(), Name = "Ice cream", Quantity = 2, Location = FridgeLocation.Freezer });
-            this.AllFridgeItems = fridgeItems;
+            this.http = httpInstance;
         }
 
-        public void AddToFridgelist(FridgeItem fridgeItem)
+        public async Task GetFridgeItems()
         {
-            if (fridgeItem.Id == Guid.Empty)
+            this.InProgress = true;
+            NotifyStateChanged();
+
+            this.AllFridgeItems = await http.GetJsonAsync<List<FridgeItem>>("/api/FridgeItem/All");
+            this.InProgress = false;
+            NotifyStateChanged();
+        }
+
+        public async Task GetShoppingListItems()
+        {
+            this.InProgress = true;
+            NotifyStateChanged();
+
+            this.ShoppingListItems = await http.GetJsonAsync<List<ShoppingListItem>>("/api/ShoppingListItem/All");
+            this.InProgress = false;
+            NotifyStateChanged();
+        }
+
+        public async Task AddToFridgelist(FridgeItem fridgeItem)
+        {
+            this.InProgress = true;
+            NotifyStateChanged();
+
+            this.AllFridgeItems = await http.PostJsonAsync<List<FridgeItem>>("/api/FridgeItem/Add", fridgeItem);
+            this.InProgress = false;
+            NotifyStateChanged();
+        }
+
+        public async Task AddToShoppingList(string shoppingListItemName)
+        {
+            if (!this.ShoppingListItems.Any(i => i.Name == shoppingListItemName))
             {
-                fridgeItem.Id = Guid.NewGuid();
+                var shoppingListItem = new ShoppingListItem() { Name = shoppingListItemName };
+                this.ShoppingListItems = await http.PostJsonAsync<List<ShoppingListItem>>("/api/ShoppingListItem/Add", shoppingListItem);
+                NotifyStateChanged();
+            }
+        }
+
+        public async Task UpdateFridgeListItem(FridgeItem fridgeItem)
+        {
+            await http.PostJsonAsync<List<ShoppingListItem>>("/api/FridgeItem/Update", fridgeItem);
+        }
+
+        public async Task UpdateShoppingListItem(long shoppingListItemId)
+        {
+            await http.GetJsonAsync<List<ShoppingListItem>>($"/api/ShoppingListItem/Update/{shoppingListItemId}");
+            var currentItem = this.ShoppingListItems.First(i => i.Id == shoppingListItemId);
+            currentItem.WasBought = !currentItem.WasBought;
+        }
+
+        public async Task RemoveFromFridgelist(long fridgeItemId)
+        {
+            this.InProgress = true;
+            NotifyStateChanged();
+
+            this.AllFridgeItems = await http.GetJsonAsync<List<FridgeItem>>($"/api/FridgeItem/Remove/{fridgeItemId}");
+            this.InProgress = false;
+            NotifyStateChanged();
+        }
+
+        public async Task CleanShoppingList()
+        {
+            this.InProgress = true;
+            NotifyStateChanged();
+
+            foreach(var shoppingListItem in this.ShoppingListItems)
+            {
+                await http.GetJsonAsync<List<ShoppingListItem>>($"/api/ShoppingListItem/Remove/{shoppingListItem.Id}");
             }
 
-            this.AllFridgeItems.Add(fridgeItem);
+            this.InProgress = false;
             NotifyStateChanged();
         }
 
-        public void AddToShoppingList(FridgeItem fridgeItem)
-        {
-            if (this.ShoppingListItems == null)
-            {
-                this.ShoppingListItems = new List<FridgeItem>();
-            }
-
-            this.ShoppingListItems.Add(fridgeItem);
-            NotifyStateChanged();
-        }
-
-        //public void SelectItem(Guid activeItemId)
-        //{
-        //    var currentSelected = this.AllFridgeItems.FirstOrDefault(i => i.IsActive);
-
-        //    if(currentSelected.Id == activeItemId)
-        //    {
-        //        currentSelected.IsActive = false;
-        //    }
-        //    else
-        //    {                
-        //        foreach (var item in this.AllFridgeItems)
-        //        {
-        //            item.IsActive = false;
-        //        }
-
-        //        this.AllFridgeItems.FirstOrDefault(i => i.Id == activeItemId).IsActive = true;
-        //    }
-            
-        //    NotifyStateChanged();
-        //}
-
-        //public void IncreaseQuantity(Guid activeItemId)
-        //{
-        //    var currentItem = this.AllFridgeItems.FirstOrDefault(i => i.Id == activeItemId);
-
-        //    if (currentItem != null)
-        //    {
-        //        currentItem.Quantity++;
-        //    }
-        //}
-
-        //public void DecreaseQuantity(Guid activeItemId)
-        //{
-        //    var currentItem = this.AllFridgeItems.FirstOrDefault(i => i.Id == activeItemId);
-
-        //    if (currentItem != null && currentItem.Quantity > 0)
-        //    {
-        //        currentItem.Quantity--;
-        //    }
-        //}
-
-        public void RemoveFromFridgelist(FridgeItem fridgeItem)
-        {
-            this.AllFridgeItems.Remove(fridgeItem);
-            NotifyStateChanged();
-        }
-
-        private void NotifyStateChanged() => OnChange?.Invoke();
+        private void NotifyStateChanged() => OnUdpatedFridgeItems?.Invoke();
     }
 }

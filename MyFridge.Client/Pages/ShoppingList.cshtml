@@ -1,0 +1,43 @@
+﻿@using MyFridge.Client.Services
+@inject AppState state
+@page "/shopping"
+
+<div id="newItemHeader">
+    <h3>
+        Shopping List
+        <small class="text-muted">(@((state.ShoppingListItems != null) ? state.ShoppingListItems.Count : 0) items)</small>
+    </h3>
+</div>
+
+<div id="shoppingList">
+    <hr>
+    <BusyIndicator IsInProgress="state.InProgress"></BusyIndicator>
+
+    @if (!state.InProgress)
+    {
+        @if (state.ShoppingListItems.Count > 0)
+        {
+            <ul>
+                @foreach (var item in state.ShoppingListItems)
+                {
+                    <ShoppingListItem Item="@item"></ShoppingListItem>
+                }
+            </ul>
+
+            <button class="btn btn-default" onclick="@(() => state.CleanShoppingList())">Clear shopping list</button>
+        }
+        else
+        {
+            <p class="fridgeList-empty">Nothing to buy :)</p>
+        }
+    }
+
+</div>
+
+@functions{
+    protected async override void OnInit()
+    {
+        state.OnUdpatedFridgeItems += StateHasChanged;
+        await state.GetShoppingListItems().ConfigureAwait(false);
+    }
+}

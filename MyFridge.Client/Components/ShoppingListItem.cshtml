@@ -1,0 +1,16 @@
+﻿@using MyFridge.Shared
+@inject Services.AppState state
+@inherits ShoppingListItemModel
+
+<li onclick="@MarkAsBought" class="@((this.Item.WasBought) ? "through" : string.Empty)">@this.Item.Name</li>
+
+@functions{
+    [Parameter]
+    private Shared.ShoppingListItem Item { get; set; }
+
+    public void MarkAsBought()
+    {
+        this.Item.WasBought = !this.Item.WasBought;
+        state.UpdateShoppingListItem(this.Item.Id).ConfigureAwait(false);
+    }
+}

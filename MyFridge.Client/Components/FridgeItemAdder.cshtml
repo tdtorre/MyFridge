@@ -1,4 +1,5 @@
 ﻿@using MyFridge.Shared
+@inject Services.AppState state
 @inherits FridgeItemAdderModel
 
 <div id="newItemContainter">
@@ -17,9 +18,6 @@
 </div>
 
 @functions{
-    [Parameter]
-    private Action<FridgeItem> OnAddItem { get; set; }
-
     private FridgeItem Item { get; set; }
 
     private FridgeLocation Location { get; set; } = FridgeLocation.Fridge;
@@ -38,9 +36,9 @@
             var tempItem = this.InitializeItem();
 
             // Send the item to the parent component
-            this.OnAddItem(this.Item);
+            state.AddToFridgelist(this.Item).ConfigureAwait(false);
 
-            // Assign the temp item to the current 
+            // Assign the temp item to the current
             this.Item = tempItem;
         }
     }
@@ -49,7 +47,7 @@
     {
         var location = FridgeLocation.Fridge;
 
-        if(this.Item != null)
+        if (this.Item != null)
         {
             location = this.Item.Location;
         }

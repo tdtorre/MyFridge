@@ -3,17 +3,24 @@
 @page "/"
 
 <div id="newItemHeader">
-    <p>What do you have in your fridge?</p>
+    <p><h3>What do you have in your fridge?</h3></p>
 </div>
 
-<FridgeItemAdder OnAddItem=state.AddToFridgelist ></FridgeItemAdder>
-<FridgeListItemsContainer ListId="fridge" FridgeItems="state.FridgeItems"></FridgeListItemsContainer>
-<FridgeListItemsContainer ListId="freezer" FridgeItems="state.FreezerItems"></FridgeListItemsContainer>
+<FridgeItemAdder></FridgeItemAdder>
+<BusyIndicator IsInProgress="state.InProgress"></BusyIndicator>
+
+@if (!state.InProgress)
+{
+    <p class="stockTitle">FRIDGE</p>
+    <FridgeListItemsContainer ListId="fridge" FridgeItems="state.FridgeItems"></FridgeListItemsContainer>
+    <p class="stockTitle">FREEZER</p>
+    <FridgeListItemsContainer ListId="freezer" FridgeItems="state.FreezerItems"></FridgeListItemsContainer>
+}
 
 @functions{
     protected async override void OnInit()
     {
-        await state.LoadItems();
-        state.OnChange += StateHasChanged;
+        state.OnUdpatedFridgeItems += StateHasChanged;
+        await state.GetFridgeItems().ConfigureAwait(false);
     }
 }

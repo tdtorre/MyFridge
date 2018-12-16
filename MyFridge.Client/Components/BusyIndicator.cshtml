@@ -1,0 +1,11 @@
+﻿@inherits BusyIndicatorModel
+
+<div class="busyIndicator @(!IsInProgress ? "d-none" : string.Empty)">
+    <img src="img/inprogress.gif" class="mx-auto d-block" alt="In progress..." />
+</div>
+
+@functions
+{
+    [Parameter]
+    bool IsInProgress { get; set; }
+}
