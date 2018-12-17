@@ -22,5 +22,6 @@
     {
         state.OnUdpatedFridgeItems += StateHasChanged;
         await state.GetFridgeItems().ConfigureAwait(false);
+        await state.GetShoppingListItems().ConfigureAwait(false);
     }
 }

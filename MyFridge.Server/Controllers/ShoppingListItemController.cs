@@ -24,30 +24,36 @@ namespace MyFridge.Server.Controllers
         }
 
         [HttpPost("[action]")]
-        public void Add([FromBody] ShoppingListItem shoppingListItem)
+        public List<ShoppingListItem> Add([FromBody] ShoppingListItem shoppingListItem)
         {
             _context.Add(shoppingListItem.ToData());
             _context.SaveChanges();
-        }
 
-        [HttpGet("[action]")]
-        public void Update(long shoppingListItemId)
-        {
-            var currentItem = _context.ShoppingItems.FirstOrDefault(i => i.Id == shoppingListItemId);
-            currentItem.WasBought = !currentItem.WasBought;
-            _context.SaveChanges();
+            return this.All();
         }
 
         [HttpGet("[action]/{ItemId}")]
-        public void Remove(long itemId)
+        public ShoppingListItem Update(long itemId)
         {
-            var removeItem = _context.ShoppingItems.FirstOrDefault(i => i.Id == itemId);
+            var currentItem = _context.ShoppingItems.FirstOrDefault(i => i.Id == itemId);
+            currentItem.WasBought = !currentItem.WasBought;
+            _context.SaveChanges();
 
-            if (removeItem != null)
+            return currentItem.ToShared();
+        }
+
+        [HttpGet("[action]")]
+        public List<ShoppingListItem> Remove()
+        {
+            var removeItems = _context.ShoppingItems;
+
+            if (removeItems != null)
             {
-                _context.Remove(removeItem);
+                _context.RemoveRange(removeItems);
                 _context.SaveChanges();
             }
+
+            return this.All();
         }
     }
 }

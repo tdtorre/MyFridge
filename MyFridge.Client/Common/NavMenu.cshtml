@@ -1,4 +1,7 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using MyFridge.Client.Services
+@inject AppState state
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">My Fridge</a>
     <button class="navbar-toggler-custom" onclick=@ToggleNavMenu>
         <span class="oi oi-menu" aria-hidden="true"></span>
@@ -9,12 +12,12 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="" Match=NavLinkMatch.All>
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Stock
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Stock @((state.AllFridgeItems != null && state.AllFridgeItems.Count > 0) ? "(" + state.AllFridgeItems.Count + ")" : string.Empty)
             </NavLink>
         </li>
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="shopping">
-                <span class="oi oi-cart" aria-hidden="true"></span> Shopping list
+                <span class="oi oi-cart" aria-hidden="true"></span> Shopping list @((state.ShoppingListItems != null && state.ShoppingListItems.Count > 0) ? "(" + state.ShoppingListItems.Count + ")" : string.Empty)
             </NavLink>
         </li>
         <li class="nav-item px-3">
@@ -27,6 +30,11 @@
 
 @functions {
     bool collapseNavMenu = true;
+
+    protected async override void OnInit()
+    {
+        state.OnUdpatedFridgeItems += StateHasChanged;
+    }
 
     void ToggleNavMenu()
     {

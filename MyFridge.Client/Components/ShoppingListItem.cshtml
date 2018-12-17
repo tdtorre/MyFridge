@@ -11,6 +11,7 @@
     public void MarkAsBought()
     {
         this.Item.WasBought = !this.Item.WasBought;
+        Console.WriteLine("Updating item: " + this.Item.Id);
         state.UpdateShoppingListItem(this.Item.Id).ConfigureAwait(false);
     }
 }

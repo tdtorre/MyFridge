@@ -12,9 +12,9 @@ namespace MyFridge.Client.Services
     {
         private readonly HttpClient http;
 
-        private IList<FridgeItem> AllFridgeItems;
-        
         public bool InProgress { get; private set; }
+
+        public IList<FridgeItem> AllFridgeItems { get; set; }
 
         public IList<ShoppingListItem> ShoppingListItems { get; set; }
 
@@ -60,31 +60,31 @@ namespace MyFridge.Client.Services
         public async Task GetFridgeItems()
         {
             this.InProgress = true;
-            NotifyStateChanged();
+            this.NotifyStateChanged();
 
             this.AllFridgeItems = await http.GetJsonAsync<List<FridgeItem>>("/api/FridgeItem/All");
             this.InProgress = false;
-            NotifyStateChanged();
+            this.NotifyStateChanged();
         }
 
         public async Task GetShoppingListItems()
         {
             this.InProgress = true;
-            NotifyStateChanged();
+            this.NotifyStateChanged();
 
             this.ShoppingListItems = await http.GetJsonAsync<List<ShoppingListItem>>("/api/ShoppingListItem/All");
             this.InProgress = false;
-            NotifyStateChanged();
+            this.NotifyStateChanged();
         }
 
         public async Task AddToFridgelist(FridgeItem fridgeItem)
         {
             this.InProgress = true;
-            NotifyStateChanged();
+            this.NotifyStateChanged();
 
             this.AllFridgeItems = await http.PostJsonAsync<List<FridgeItem>>("/api/FridgeItem/Add", fridgeItem);
             this.InProgress = false;
-            NotifyStateChanged();
+            this.NotifyStateChanged();
         }
 
         public async Task AddToShoppingList(string shoppingListItemName)
@@ -93,44 +93,34 @@ namespace MyFridge.Client.Services
             {
                 var shoppingListItem = new ShoppingListItem() { Name = shoppingListItemName };
                 this.ShoppingListItems = await http.PostJsonAsync<List<ShoppingListItem>>("/api/ShoppingListItem/Add", shoppingListItem);
-                NotifyStateChanged();
+                this.NotifyStateChanged();
             }
         }
 
         public async Task UpdateFridgeListItem(FridgeItem fridgeItem)
         {
-            await http.PostJsonAsync<List<ShoppingListItem>>("/api/FridgeItem/Update", fridgeItem);
+            await http.PostJsonAsync<List<FridgeItem>>("/api/FridgeItem/Update", fridgeItem);
         }
 
         public async Task UpdateShoppingListItem(long shoppingListItemId)
         {
             await http.GetJsonAsync<List<ShoppingListItem>>($"/api/ShoppingListItem/Update/{shoppingListItemId}");
-            var currentItem = this.ShoppingListItems.First(i => i.Id == shoppingListItemId);
-            currentItem.WasBought = !currentItem.WasBought;
         }
 
         public async Task RemoveFromFridgelist(long fridgeItemId)
         {
             this.InProgress = true;
-            NotifyStateChanged();
+            this.NotifyStateChanged();
 
             this.AllFridgeItems = await http.GetJsonAsync<List<FridgeItem>>($"/api/FridgeItem/Remove/{fridgeItemId}");
             this.InProgress = false;
-            NotifyStateChanged();
+            this.NotifyStateChanged();
         }
 
-        public async Task CleanShoppingList()
+        public async Task ClearShoppingList()
         {
-            this.InProgress = true;
-            NotifyStateChanged();
-
-            foreach(var shoppingListItem in this.ShoppingListItems)
-            {
-                await http.GetJsonAsync<List<ShoppingListItem>>($"/api/ShoppingListItem/Remove/{shoppingListItem.Id}");
-            }
-
-            this.InProgress = false;
-            NotifyStateChanged();
+            this.ShoppingListItems = await http.GetJsonAsync<List<ShoppingListItem>>($"/api/ShoppingListItem/Remove");
+            this.NotifyStateChanged();
         }
 
         private void NotifyStateChanged() => OnUdpatedFridgeItems?.Invoke();

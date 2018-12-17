@@ -9,7 +9,7 @@
     </h3>
 </div>
 
-<div id="shoppingList">
+<div id="shoppingList" class="contentContainer">
     <hr>
     <BusyIndicator IsInProgress="state.InProgress"></BusyIndicator>
 
@@ -24,7 +24,7 @@
                 }
             </ul>
 
-            <button class="btn btn-default" onclick="@(() => state.CleanShoppingList())">Clear shopping list</button>
+            <button class="btn btn-default" onclick="@(() => state.ClearShoppingList())">Clear shopping list</button>
         }
         else
         {
