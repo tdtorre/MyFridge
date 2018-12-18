@@ -13,7 +13,7 @@
     <div class="list-group-buttons">
         <button type="button" class="btn btn-sm btn-secondary textIcon" onclick="@IncreaseQuantity">+</button>
         <button type="button" class="btn btn-sm btn-secondary textIcon" onclick="@DecreaseQuantity">-</button>
-        <button type="button" class="btn btn-sm btn-secondary" onclick="@(() => state.RemoveFromFridgelist(this.Item.Id))">Remove</button>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="@(() => state.RemoveFromFridgelist(this.Item))">Remove</button>
         <button type="button" class="btn btn-sm btn-secondary" onclick="@AddToShoppingList">Add to shopping list</button>
     </div>
 </li>

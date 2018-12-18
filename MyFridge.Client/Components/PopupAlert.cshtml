@@ -1,0 +1,63 @@
+﻿@using MyFridge.Shared
+@inherits PopupAlertModel
+
+<div class="popupAlert fade-in">
+    <div class="alert alert-@AlertClassType" role="alert">
+        <span class="alertIcon oi oi-@AlertIconType" aria-hidden="true"></span> @Alert.Message
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" onclick="@(() => this.OnAlertFinish(this.Alert))">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</div>
+
+@functions{
+    [Parameter]
+    private PopupMessage Alert { get; set; }
+
+    [Parameter]
+    private Action<PopupMessage> OnAlertFinish { get; set; }
+
+    private string AlertClassType
+    {
+        get
+        {
+            switch (this.Alert.Type)
+            {
+                case PopupMessageType.Warning:
+                    return "warning";
+                case PopupMessageType.Error:
+                    return "error";
+                default:
+                    return "success";
+            }
+        }
+    }
+
+    private string AlertIconType
+    {
+        get
+        {
+            switch (this.Alert.Type)
+            {
+                case PopupMessageType.Warning:
+                    return "warning";
+                case PopupMessageType.Error:
+                    return "x";
+                default:
+                    return "info";
+            }
+        }
+    }
+
+    protected override async void OnInit()
+    {
+        base.OnInit();
+        await this.ShowingAlertTimer();
+    }
+
+    private async Task ShowingAlertTimer()
+    {
+        await Task.Delay(2500);
+        this.OnAlertFinish.Invoke(this.Alert);
+    }
+}

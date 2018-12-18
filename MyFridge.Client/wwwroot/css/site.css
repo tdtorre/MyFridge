@@ -117,14 +117,14 @@ app {
     margin-right: auto;
 }
 
-    #shoppingList li {
-        cursor: pointer;
-        font-style: italic;
-    }
+#shoppingList li {
+    cursor: pointer;
+    font-style: italic;
+}
 
-        #shoppingList li.through {
-            text-decoration: line-through;
-        }
+    #shoppingList li.through {
+        text-decoration: line-through;
+    }
 
 #newItemContainter {
     width: 100%;
@@ -252,7 +252,7 @@ img.avatar {
     margin: 30px 0px;
 }
 
-div.socialIcons{
+div.socialIcons {
     margin-top: 20px;
 }
 
@@ -291,6 +291,39 @@ div.socialIcons{
     }
 }
 
+div.popupAlertContainer {
+    position: fixed;
+    bottom: 30px;
+    right: 20px;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+div.popupAlert {
+    pointer-events: all;
+    z-index: 9999;
+    position: relative;
+    clear: both;
+    float: right;
+    margin-top: 5px;
+    height: 50px;
+    box-shadow: 0 0px 0px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19) !important;
+}
+
+.alert span.alertIcon {
+    margin-right: 20px;
+}
+
+.alert button {
+    margin-left: 20px;
+}
+
+.fade-in {
+    -webkit-animation: fadeIn .4s ease-in 1 forwards;
+    animation: fadeIn .4s ease-in 1 forwards;
+    opacity: 0;
+}
+
 @media (min-width: 768px) {
     app {
         flex-direction: row;
@@ -324,6 +357,12 @@ div.socialIcons{
 }
 
 /* ANIMATIONS */
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
 @keyframes slideDown {
     0% {
         transform: translateY(-100%);
@@ -347,6 +386,12 @@ div.socialIcons{
 
     100% {
         transform: translateY(0%);
+    }
+}
+
+@-webkit-keyframes fadeIn {
+    to {
+        opacity: 1;
     }
 }
 
