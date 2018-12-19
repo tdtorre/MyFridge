@@ -106,7 +106,7 @@ app {
         color: #d6d8db;
     }
 
-#newItemHeader {
+#pageHeader {
     text-align: center;
     margin-top: 50px;
 }
@@ -128,6 +128,7 @@ app {
     }
 
 #newItemContainter {
+    margin-top: 17px;s
     width: 100%;
 }
 
@@ -283,7 +284,7 @@ div.socialIcons {
         display: none;
     }
 
-    #newItemHeader {
+    #pageHeader {
         margin-top: 10px;
     }
 
