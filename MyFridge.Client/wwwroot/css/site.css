@@ -120,6 +120,7 @@ app {
 #shoppingList li {
     cursor: pointer;
     font-style: italic;
+    font-size: 24px;
 }
 
     #shoppingList li.through {

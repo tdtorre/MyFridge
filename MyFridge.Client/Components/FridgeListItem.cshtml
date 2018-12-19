@@ -1,5 +1,4 @@
-﻿@using MyFridge.Shared
-@inject Services.AppState state
+﻿@inject Services.AppState state
 @inherits FridgeListItemModel
 
 <li class="list-group-item d-flex justify-content-between align-items-center @(this.Item.IsActive ? "active" : string.Empty)" onclick="@ActiveItem">

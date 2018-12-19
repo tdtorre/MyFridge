@@ -1,5 +1,4 @@
-﻿@using MyFridge.Shared
-@inject Services.AppState state
+﻿@inject Services.AppState state
 @inherits ShoppingListItemModel
 
 <li onclick="@MarkAsBought" class="@((this.Item.WasBought) ? "through" : string.Empty)">@this.Item.Name</li>
