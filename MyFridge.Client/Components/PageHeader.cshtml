@@ -1,0 +1,12 @@
+﻿@inherits PageHeaderModel
+
+<div id="pageHeader">
+    <h3>
+        @ChildContent
+    </h3>
+</div>
+
+@functions{
+    [Parameter]
+    RenderFragment ChildContent { get; set; }
+}

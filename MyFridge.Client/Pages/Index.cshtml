@@ -2,12 +2,7 @@
 @inject AppState state
 @page "/"
 
-<div id="pageHeader">
-    <h3>
-        What do you have in your fridge?
-    </h3>
-</div>
-
+<PageHeader>What do you have in your fridge?</PageHeader>
 <FridgeItemAdder></FridgeItemAdder>
 <BusyIndicator IsInProgress="state.InProgress"></BusyIndicator>
 
